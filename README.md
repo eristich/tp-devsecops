@@ -38,7 +38,7 @@ Add host dns alias
 
 ## Test
 
-> The test currently the 8080 port because Vagrant cannot forward low level port (80) in host
+> The test currently use the 8080 port because Vagrant cannot forward low level port (80) in host
 
 ```sh
 (TP) $ curl -v http://www.numeration.com:8080 && echo $?
