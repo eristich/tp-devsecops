@@ -1,0 +1,17 @@
+---
+- name: Enable firewall service
+  service:
+    name: ufw
+    state: restarted
+
+- name: Apply firewall config
+  ansible.builtin.command: "{{ item }}"
+  with_items:
+    - ufw default deny incoming
+    - ufw default allow outgoing
+    - ufw allow 80/tcp  # HTTP
+    - ufw allow 443/tcp # HTTPS
+    - ufw allow 22/tcp
+    - ufw limit 80/tcp
+    - ufw logging low
+    - ufw --force enable

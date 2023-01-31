@@ -1,0 +1,15 @@
+---
+- name: Install MySQL dependencies (with ansible module)
+  apt:
+    name:
+    - default-libmysqlclient-dev 
+    - mysql-server
+    - mysql-client
+
+- name: pip install mysqlclient
+  shell: pip install mysqlclient
+
+- name: Start the MySQL service
+  service:
+    name: mysql
+    state: restarted

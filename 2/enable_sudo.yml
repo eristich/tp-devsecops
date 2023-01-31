@@ -1,0 +1,6 @@
+---
+- name: Assigner des privileges 'sudo' à 'web'
+  user:
+    name: web
+    groups: sudo
+    append: yes

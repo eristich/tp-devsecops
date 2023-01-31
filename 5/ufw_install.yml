@@ -1,0 +1,6 @@
+---
+- name: Install UFW Firewall package
+  apt:
+    name:
+      - ufw
+    state: present

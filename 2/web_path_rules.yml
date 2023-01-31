@@ -1,0 +1,7 @@
+---
+- name: Créer un dossier '/var/www'
+  file:
+    path: /var/www
+    state: directory
+    mode: 0750
+    group: devops

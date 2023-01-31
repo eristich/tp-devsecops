@@ -1,0 +1,19 @@
+---
+- name: TP DevSecOps B3-DEV-B groupe D
+  hosts: all
+  become: yes
+  become_method: sudo
+  remote_user: vagrant
+  tasks:
+    - import_tasks: ../2/user_and_group.yml
+    - import_tasks: ../2/web_path_rules.yml
+    - import_tasks: ../2/enable_sudo.yml
+    - import_tasks: ../2/ssh_key.yml
+    - import_tasks: ../3/common_dependency.yml
+    - import_tasks: ../3/php_dependency.yml
+    - import_tasks: ../3/mysql_dependency.yml
+    - import_tasks: ../3/apache2_dependency.yml
+    - import_tasks: ../4/wordpress_deployment.yml
+    - import_tasks: ../4/wordpress_installation.yml
+    - import_tasks: ../5/ufw_install.yml
+    - import_tasks: ../5/ufw_rules.yml

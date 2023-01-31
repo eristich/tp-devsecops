@@ -1,0 +1,17 @@
+---
+- name: Vérifier que le groupe 'devops' existe
+  group:
+    name: devops
+    state: present
+
+- name: Créer l'utilisateur 'web'
+  user:
+    name: web
+    shell: /bin/bash
+    password: $6$saltsalt$bAY90rAsHhyx.bxmKP9FE5UF4jP1iWgjV0ltM6ZJxfYkiIaCExjBZIbfmqmZEWoR65aM.1nFvG7fF3gYOjHpM.
+
+- name: Assigner 'web' au groupe 'devops'
+  user:
+    name: web
+    groups: devops
+    append: yes

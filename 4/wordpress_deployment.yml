@@ -1,0 +1,15 @@
+---
+- name: Load pre-builded WordPress package in Guest
+  copy:
+    src: ../4/wordpress.zip
+    dest: /var/www
+
+- name: Unzip wordpress
+  command:
+    chdir: /var/www
+    cmd: unzip wordpress.zip
+
+- name: Load WordPress SQL dump in Guest
+  copy:
+    src: ../4/wordpress.sql
+    dest: /tmp

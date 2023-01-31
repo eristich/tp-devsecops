@@ -1,0 +1,88 @@
+---
+# ************************** MYSQL CONFIGURATION ******************************
+- name: (MySQL Config) update root password for all root accounts
+  mysql_user:
+    name: root
+    host: localhost
+    password: root
+
+- name: (MySQL Config) Remove all anonymous user accounts
+  mysql_user:
+    name: ''
+    host_all: yes
+    state: absent
+    login_user: root
+    login_password: "root"
+
+- name: (MySQL Config) Remove test database
+  mysql_db:
+    name: test
+    state: absent
+    login_user: root
+    login_password: "root"
+
+- name: (MySQL Config) Creates WordPress database
+  mysql_db:
+    name: "wordpress"
+    state: present
+    login_user: root
+    login_password: "root"
+
+- name: (MySQL Config) Create WordPress user
+  mysql_user:
+    name: "wordpress"
+    password: "wordpress"
+    priv: "wordpress.*:ALL"
+    state: present
+    login_user: root
+    login_password: "root"
+
+- name: (MySQL Config) Provide database with worderpress dump
+  shell: "MYSQL_PWD=root mysql -u root wordpress < /tmp/wordpress.sql"
+
+# ************************** APACHE2 CONFIGURATION ******************************
+
+- name: (Apache Config) Enable mod_rewrite
+  command: a2enmod rewrite
+
+- name: (Apache Config) Add host alias
+  shell: echo "127.0.0.1 www.numeration.com numeration.com" >> /etc/hosts
+
+- name: (Apache Config) Create virtual host configuration file
+  copy:
+    src: ../4/numeration.com.conf
+    dest: /etc/apache2/sites-available
+
+- name: (Apache Config) Enable virtual host
+  command: a2ensite numeration.com.conf
+
+- name: (Apache Config) Disable default virtual host
+  command: a2dissite 000-default.conf
+
+- name: (Apache Config) Disable ssl virtual host
+  command: a2dissite default-ssl.conf
+
+- name: (Apache Config) Disable prefork module
+  command: a2dismod mpm_prefork
+
+- name: (Apache Config) Enable event module
+  command: a2enmod mpm_event proxy_fcgi setenvif
+
+- name: (Apache Config) Enable php8.1-fpm config
+  command: a2enconf php8.1-fpm
+
+- name: (Apache Config) Restart Apache
+  service:
+    name: apache2
+    state: restarted
+
+- name: (Apache Config) Add authorization to web path
+  command: chown -R www-data:devops /var/www
+
+- name: (Apache Config) Remove Index default HTML file
+  file: 
+    path: /var/www/html/index.html
+    state: absent
+
+- name: Test wordpress with CURL
+  shell: curl http://wwww.numeration.com
